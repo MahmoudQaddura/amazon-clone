@@ -1,6 +1,6 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useState } from "react";
-import { StarIcon } from "@heroicons/react/solid";
+import { StarIcon } from "@heroicons/react/24/solid";
 import CurrencyFormat from "react-currency-format";
 function Product({ id, title, price, description, category, image }) {
   //DONT FORGET
@@ -20,7 +20,7 @@ function Product({ id, title, price, description, category, image }) {
         {Array(rating)
           .fill()
           .map((_, i) => (
-            <StarIcon className="h-5 text-yellow-500" />
+            <StarIcon key={i} className="h-5 text-yellow-500" />
           ))}
       </div>
 

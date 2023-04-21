@@ -1,11 +1,13 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import {
-  MenuIcon,
-  SearchIcon,
+  Bars3Icon,
+  MagnifyingGlassIcon,
   ShoppingCartIcon,
-} from "@heroicons/react/outline";
-
+} from "@heroicons/react/24/outline";
+import { signIn, signOut, useSession } from "next-auth/react";
 function Header() {
+  const { data: session } = useSession();
+
   return (
     <header>
       {/* TOP NAV */}
@@ -27,13 +29,16 @@ function Header() {
             className="p-2 h-full w-6 flex-grow rounded-l-md flex-shrink focus:outline-none px-4"
             type="text"
           />
-          <SearchIcon className="h-12 p-4" />
+          <MagnifyingGlassIcon className="h-12 p-4" />
         </div>
 
         {/* RIGHT */}
         <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap ">
-          <div className="Link border border-amazon_blue  hover:border-white">
-            <p>Hello, [Customer]</p>
+          <div
+            onClick={!session ? signIn : signOut}
+            className="Link border border-amazon_blue  hover:border-white"
+          >
+            <p>{session ? `Hello, ${session.user.name}` : "Sign In"}</p>
             <p className="font-extrabold md:text-sm">Account & Lists</p>
           </div>
 
@@ -57,7 +62,7 @@ function Header() {
       {/* BOTTOM NAV */}
       <div className="  items-center space-x-4 text-sm p-2 pl-6 bg-amazon_blue-light text-white  hidden  sm:flex">
         <p className="Link flex items-center">
-          <MenuIcon className="h-6 mr-1" />
+          <Bars3Icon className="h-6 mr-1" />
           All
         </p>
         <p className="Link ">Prime Video</p>
