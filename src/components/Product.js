@@ -1,11 +1,20 @@
 import Image from "next/legacy/image";
-import { useState } from "react";
+//import { useState } from "react";
 import { StarIcon } from "@heroicons/react/24/solid";
 import CurrencyFormat from "react-currency-format";
-function Product({ id, title, price, description, category, image }) {
+import { useDispatch } from "react-redux";
+import { addToBasket } from "../slices/basketSlice";
+function Product({ id, title, price, description, category, image, rating }) {
   //DONT FORGET
-  const [rating] = useState(2); //TODO RATING FROM USERS FETCHED FROM DB
+  //const [rating] = useState(2); //TODO RATING FROM USERS FETCHED FROM DB
   //DONT FORGET
+  const rate = Math.round(rating.rate);
+  const dispatch = useDispatch();
+  const addItemToBasket = () => {
+    const product = { id, title, price, description, category, image, rate };
+    dispatch(addToBasket(product));
+  };
+
   return (
     <div className="relative flex flex-col m-5 bg-white z-30 p-10">
       <p className="absolute top-2 right-2 text-xs italic text-gray-400">
@@ -17,7 +26,7 @@ function Product({ id, title, price, description, category, image }) {
       <h4 className="my-3 line-clamp-2">{title}</h4>
 
       <div className="flex">
-        {Array(rating)
+        {Array(rate)
           .fill()
           .map((_, i) => (
             <StarIcon key={i} className="h-5 text-yellow-500" />
@@ -35,7 +44,9 @@ function Product({ id, title, price, description, category, image }) {
         />
       </div>
 
-      <button className="mt-auto button">Add to Basket</button>
+      <button onClick={addItemToBasket} className="mt-auto button">
+        Add to Basket
+      </button>
     </div>
   );
 }
