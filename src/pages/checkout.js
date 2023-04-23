@@ -43,8 +43,8 @@ function Checkout() {
 
         {/* RIGHT */}
         <div
-          className={`hidden ${
-            items.length === 0 && "flex visible"
+          className={`flex ${
+            items.length === 0 && "hidden"
           } flex-col bg-white p-10 shadow-md`}
         >
           {items.length > 0 && (
