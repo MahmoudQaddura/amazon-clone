@@ -9,14 +9,18 @@
   "dependencies": {
     "@heroicons/react": "^2.0.17",
     "@reduxjs/toolkit": "^1.9.5",
+    "@stripe/stripe-js": "^1.52.1",
     "@tailwindcss/line-clamp": "^0.2.0",
+    "axios": "^1.4.0",
+    "micro": "^10.0.1",
     "next": "latest",
     "next-auth": "^4.22.1",
     "react": "^18.2.0",
     "react-currency-format": "^1.1.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
-    "react-responsive-carousel": "^3.2.23"
+    "react-responsive-carousel": "^3.2.23",
+    "stripe": "^12.5.0"
   },
   "license": "MIT",
   "devDependencies": {
