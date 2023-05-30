@@ -1,0 +1,165 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["jsonProtocol","extendedWhereUnique"]
+
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+}
+
+//================================================================================================================
+
+model Product {
+  id                  String   @id @default(cuid())
+  name        String
+  description String
+  image       String
+  quantity    Int
+  price       Float
+  category            Category? @relation(fields: [category_id], references: [id])
+  category_id         String?
+  supplier            Supplier? @relation(fields: [supplier_id], references: [id])
+  supplier_id         String?
+  order_Product       Order_Product[]
+  review              Review[]
+  discount Discount[]
+  
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  parentId   String?    
+  parent   Category?   @relation("subCategory", fields: [parentId], references: [id])
+  children    Category[]   @relation("subCategory")
+
+  Product     Product[]
+}
+
+model Supplier {
+  id             String @id @default(cuid())
+  name  String @unique @default("N/A")
+  phone String @unique  @default("N/A")
+
+  product Product[]
+}
+
+model Discount {
+  id             String @id @default(cuid())
+  percentage  Int 
+  start_date DateTime
+  end_date    DateTime
+  note  String?
+  product            Product @relation(fields: [product_id], references: [id])
+  product_id         String
+}
+
+//================================================================================================================
+
+model Order {
+  id              String    @id @default(cuid())
+  order_time      DateTime  @default(now()) @map(name: "order_time")
+  user            User      @relation(fields: [user_id], references: [id])
+  user_id         String
+}
+
+model Delivery{
+  id              String    @id @default(cuid())
+  delivery_status Boolean?
+  delivery_date   DateTime?
+  user            User      @relation(fields: [user_id], references: [id])
+  user_id         String
+  order_product Order_Product[]
+}
+
+model Order_Product{
+  id         String   @id @default(cuid())
+  quantity Int
+  product    Product  @relation(fields: [product_id], references: [id])
+  product_id String
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    String
+  delivery       Delivery     @relation(fields: [delivery_id], references: [id])
+  delivery_id    String
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  review     String?
+  rating     Int
+  product    Product  @relation(fields: [product_id], references: [id])
+  product_id String
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    String
+}
+
+//================================================================================================================
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  emailVerified DateTime?
+  image         String?
+  account Account? @relation(fields:[accountId], references:[id])
+  accountId String?
+  contact Contact? @relation(fields:[contactId], references:[id])
+  contactId String?
+  order     Order[]
+  delivery     Delivery[]
+  review    Review[]
+  sessions      Session[]
+  order_product Order_Product[]
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String  @map("user_id")
+  type               String
+  provider           String
+  providerAccountId  String  @map("provider_account_id")
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+
+  user      User[]
+
+  @@unique([provider, providerAccountId])
+  }
+
+  model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique@map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields:[userId], references:[id], onDelete: Cascade)
+  }
+
+  model VerificationToken {
+  id         Int      @id @default(autoincrement())
+  identifier String   @unique
+  token      String   @unique
+  expires    DateTime
+
+  //@@unique([identifier, token])}
+}
+
+model Contact{
+  id              String    @id @default(cuid())
+  address String
+  zip String?
+  phone Int
+  user User[]
+}
+

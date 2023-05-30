@@ -2,16 +2,21 @@
   "name": "store",
   "version": "1.0.0",
   "scripts": {
+    "prisma-push": "dotenv -e .env.local -- npx prisma db push",
+    "prisma-studio": "dotenv -e .env.local -- npx prisma studio",
+    "prisma-gen": "dotenv -e .env.local -- npx prisma generate",
     "dev": "next",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.17",
+    "@prisma/client": "^4.14.1",
     "@reduxjs/toolkit": "^1.9.5",
     "@stripe/stripe-js": "^1.52.1",
     "@tailwindcss/line-clamp": "^0.2.0",
     "axios": "^1.4.0",
+    "bcrypt": "^5.1.0",
     "micro": "^10.0.1",
     "next": "latest",
     "next-auth": "^4.22.1",
@@ -27,6 +32,7 @@
     "autoprefixer": "^10.2.5",
     "postcss": "^8.2.15",
     "postcss-import": "^15.1.0",
+    "prisma": "^4.14.1",
     "tailwindcss": "^2.1.2"
   }
 }
