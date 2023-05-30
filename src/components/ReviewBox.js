@@ -2,14 +2,15 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-function ReviewBox({ reviews }) {
+function ReviewBox({ product }) {
+  const reviews = product.reviews;
   const { data: session } = useSession();
   const submitReview = async (event) => {
     event.preventDefault();
     const review = {
       review: event.target.review.value,
       rating: event.target.rating.value,
-      product_id: reviews[0].product_id,
+      product_id: product.id,
       userName: session.user.name,
     };
 

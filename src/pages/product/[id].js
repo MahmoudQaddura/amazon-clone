@@ -67,7 +67,7 @@ function Page({ product }) {
           <p className="font-bold">Left in Stock: {product.quantity}</p>
           <p className="text-s my-2 ">{description}</p>
 
-          <ReviewBox key={product.reviews.id} reviews={product.reviews} />
+          <ReviewBox key={product.reviews.id} product={product} />
           <button
             onClick={addItemToBasket}
             className="mt-auto mb-1 button w-60"

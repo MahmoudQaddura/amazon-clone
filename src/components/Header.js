@@ -1,4 +1,4 @@
-import Image from "next/legacy/image";
+import Image from "next/image";
 import {
   Bars3Icon,
   MagnifyingGlassIcon,
@@ -52,7 +52,7 @@ function Header() {
             src="https://links.papareact.com/f90"
             width={150}
             height={40}
-            objectFit="contain"
+            style={{ objectFit: "cover" }}
             className="cursor-pointer"
           />
         </div>
