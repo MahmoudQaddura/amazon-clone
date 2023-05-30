@@ -49,7 +49,8 @@ function Header() {
         <div className="mt-2 flex items-center flex-grow sm:flex-grow-0 pt-3 border border-amazon_blue  hover:border-white">
           <Image
             onClick={() => router.push("/")}
-            src="https://links.papareact.com/f90"
+            alt="logo"
+            src="/logo.png"
             width={150}
             height={40}
             style={{ objectFit: "cover" }}
