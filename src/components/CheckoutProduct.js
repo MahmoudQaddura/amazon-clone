@@ -1,5 +1,4 @@
 import Image from "next/legacy/image";
-import { StarIcon } from "@heroicons/react/24/solid";
 import CurrencyFormat from "react-currency-format";
 import { useDispatch } from "react-redux";
 import { addToBasket, removeFromBasket } from "../slices/basketSlice";
@@ -10,11 +9,19 @@ function CheckoutProduct({
   description,
   category,
   image,
-  rate,
+  quantity,
 }) {
   const dispatch = useDispatch();
   const addItemToBasket = () => {
-    const product = { id, title, price, description, category, image, rate };
+    const product = {
+      id,
+      title,
+      price,
+      description,
+      category,
+      image,
+      quantity,
+    };
     dispatch(addToBasket(product));
   };
   const removeItemToBasket = () => {
@@ -27,16 +34,10 @@ function CheckoutProduct({
 
       <div className="col-span-3 mx-5">
         <p>{title}</p>
-        <div className="flex">
-          {Array(rate)
-            .fill()
-            .map((_, i) => (
-              <StarIcon key={i} className="h-5 text-yellow-500" />
-            ))}
-        </div>
+        <div className="flex font-bold">Quantity: {quantity}</div>
         <p className="text-xs my-2 line-clamp-3  ">{description}</p>
         <CurrencyFormat
-          value={price}
+          value={price * quantity}
           displayType={"text"}
           thousandSeparator={true}
           prefix={"$"}

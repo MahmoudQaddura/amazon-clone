@@ -12,6 +12,10 @@ function Checkout() {
   const total = useSelector(selectTotal);
   const { data: session } = useSession();
   const items = useSelector(selectItems);
+  let count = 0;
+  items.map((item) => {
+    count += item.quantity;
+  });
 
   const createCheckoutSession = async () => {
     const stripe = await stripePromise;
@@ -53,11 +57,11 @@ function Checkout() {
 
             {items.map((item, i) => (
               <CheckoutProduct
-                key={item.id}
+                key={i}
                 id={item.id}
                 title={item.title}
                 price={item.price}
-                rate={item.rate}
+                quantity={item.quantity}
                 description={item.description}
                 category={item.category}
                 image={item.image}
@@ -75,10 +79,11 @@ function Checkout() {
           {items.length > 0 && (
             <>
               <h2 className="whitespace-nowrap">
-                Subtotal ({items.length} items):{"  "}
+                Subtotal ({count} items):{"  "}
                 <span className="font-bold">
                   <CurrencyFormat
                     value={total}
+                    decimalScale={2}
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"$"}

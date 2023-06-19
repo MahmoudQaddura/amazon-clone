@@ -1,7 +1,10 @@
+import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function signUp() {
+  const router = useRouter();
   const submitUser = async (event) => {
     event.preventDefault();
     const user = {
@@ -23,46 +26,54 @@ function signUp() {
       });
   };
   return (
-    <div className="flex  h-screen justify-end bg-amazon_blue">
+    <div className="flex  h-screen justify-end bg-gray-200">
       <form
-        className="flex flex-col flex-auto mt-30 space-y-3 m-auto items-center justify-center py-10 bg-amazon_blue-light max-w-screen-lg mx-auto"
+        className=" relative flex flex-col flex-auto mt-30 space-y-3 m-auto items-center justify-center py-10 bg-white max-w-screen-lg mx-auto rounded-lg"
         onSubmit={submitUser}
       >
-        <h1 className="text-yellow-300 text-xl">Create New Account</h1>
+        <ArrowLeftOnRectangleIcon
+          className="absolute top-2 left-2 h-8 text-yellow-400 hover:cursor-pointer"
+          onClick={() => router.push("/")}
+        />
+        <div className="w-full flex flex-col space-y-3 m-auto items-center justify-center  ">
+          <h1 className="text-yellow-400 text-xl border-b border-yellow-400 w-1/2 text-center pb-3">
+            Create New Account
+          </h1>
 
-        <div className="flex flex-col flex-auto">
-          <label className="text-white">Full Name</label>
-          <input
-            required
-            name="userName"
-            type="text"
-            className="bg-white text-black"
-          />
-        </div>
+          <div className="flex flex-col flex-auto w-1/2">
+            <label className="text-yellow-400 ">Full Name</label>
+            <input
+              required
+              name="userName"
+              type="text"
+              className="bg-gray-200 text-black"
+            />
+          </div>
 
-        <div className="flex flex-col flex-auto">
-          <label className="text-white">Email</label>
-          <input
-            required
-            name="userEmail"
-            type="email"
-            id=""
-            className="bg-white text-black"
-          />
-        </div>
+          <div className="flex flex-col flex-auto w-1/2">
+            <label className="text-yellow-400">Email</label>
+            <input
+              required
+              name="userEmail"
+              type="email"
+              id=""
+              className="bg-gray-200 text-black"
+            />
+          </div>
 
-        <div className="flex flex-col flex-auto">
-          <label className="text-white">Password</label>
-          <input
-            name="userPassword"
-            required
-            type="password"
-            className="bg-white text-black"
-          />
+          <div className="flex flex-col flex-auto w-1/2">
+            <label className="text-yellow-400">Password</label>
+            <input
+              name="userPassword"
+              required
+              type="password"
+              className="bg-gray-200 text-black"
+            />
+          </div>
+          <button className="button w-1/6 h-9 " type="submit">
+            Register
+          </button>
         </div>
-        <button className="button" type="submit">
-          Register
-        </button>
       </form>
     </div>
   );

@@ -11,7 +11,32 @@ datasource db {
   shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
 
-//================================================================================================================
+//==========================================USER CLUSTER====================================================
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  image         String?
+  // account Account? @relation(fields:[accountId], references:[id])
+  // accountId String?
+  contact Contact? @relation(fields:[contactId], references:[id])
+  contactId String?
+  order     Order[]
+  review    Review[]
+  // sessions      Session[]
+}
+
+model Contact{
+  id              String    @id @default(cuid())
+  address String
+  zip String?
+  phone Int
+  user User[]
+}
+
+//================================================PRODCUT CLUSTER=====================================================
 
 model Product {
   id                  String   @id @default(cuid())
@@ -26,7 +51,7 @@ model Product {
   supplier_id         String?
   order_Product       Order_Product[]
   review              Review[]
-  discount Discount[]
+  // discount Discount[]
   
 }
 
@@ -48,43 +73,41 @@ model Supplier {
   product Product[]
 }
 
-model Discount {
-  id             String @id @default(cuid())
-  percentage  Int 
-  start_date DateTime
-  end_date    DateTime
-  note  String?
-  product            Product @relation(fields: [product_id], references: [id])
-  product_id         String
-}
 
-//================================================================================================================
+
+//==============================================ORDER CLUSTER==================================================
 
 model Order {
   id              String    @id @default(cuid())
+  total Float @default(0.0)
   order_time      DateTime  @default(now()) @map(name: "order_time")
   user            User      @relation(fields: [user_id], references: [id])
   user_id         String
+  delivery       Delivery     @relation(fields: [delivery_id], references: [id])
+  delivery_id    String
+
+    order_product Order_Product[]
 }
 
 model Delivery{
   id              String    @id @default(cuid())
-  delivery_status Boolean?
-  delivery_date   DateTime?
-  user            User      @relation(fields: [user_id], references: [id])
-  user_id         String
-  order_product Order_Product[]
+  country String
+  city  String
+  line1 String
+  line2 String
+  postal_code String
+  
+  order Order[]
 }
 
 model Order_Product{
   id         String   @id @default(cuid())
-  quantity Int
+  quantity    Int     @default(1)
   product    Product  @relation(fields: [product_id], references: [id])
   product_id String
-  user       User     @relation(fields: [user_id], references: [id])
-  user_id    String
-  delivery       Delivery     @relation(fields: [delivery_id], references: [id])
-  delivery_id    String
+  order       Order     @relation(fields: [order_id], references: [id])
+  order_id    String
+
 }
 
 model Review {
@@ -97,69 +120,59 @@ model Review {
   user_id    String
 }
 
-//================================================================================================================
 
-model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  emailVerified DateTime?
-  image         String?
-  account Account? @relation(fields:[accountId], references:[id])
-  accountId String?
-  contact Contact? @relation(fields:[contactId], references:[id])
-  contactId String?
-  order     Order[]
-  delivery     Delivery[]
-  review    Review[]
-  sessions      Session[]
-  order_product Order_Product[]
-}
 
-model Account {
-  id                 String  @id @default(cuid())
-  userId             String  @map("user_id")
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-  oauth_token_secret String?
-  oauth_token        String?
 
-  user      User[]
+//==============================================THE MAYBE LATER CLUSTER==================================================
 
-  @@unique([provider, providerAccountId])
-  }
+// model Discount {
+//   id             String @id @default(cuid())
+//   percentage  Int 
+//   start_date DateTime
+//   end_date    DateTime
+//   note  String?
+//   product            Product @relation(fields: [product_id], references: [id])
+//   product_id         String
+// }
 
-  model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique@map("session_token")
-  userId       String   @map("user_id")
-  expires      DateTime
-  user         User     @relation(fields:[userId], references:[id], onDelete: Cascade)
-  }
 
-  model VerificationToken {
-  id         Int      @id @default(autoincrement())
-  identifier String   @unique
-  token      String   @unique
-  expires    DateTime
+// model Account {
+//   id                 String  @id @default(cuid())
+//   userId             String  @map("user_id")
+//   type               String
+//   provider           String
+//   providerAccountId  String  @map("provider_account_id")
+//   refresh_token      String?
+//   access_token       String?
+//   expires_at         Int?
+//   token_type         String?
+//   scope              String?
+//   id_token           String?
+//   session_state      String?
+//   oauth_token_secret String?
+//   oauth_token        String?
 
-  //@@unique([identifier, token])}
-}
+//   user      User[]
 
-model Contact{
-  id              String    @id @default(cuid())
-  address String
-  zip String?
-  phone Int
-  user User[]
-}
+//   @@unique([provider, providerAccountId])
+//   }
+
+//   model Session {
+//   id           String   @id @default(cuid())
+//   sessionToken String   @unique@map("session_token")
+//   userId       String   @map("user_id")
+//   expires      DateTime
+//   user         User     @relation(fields:[userId], references:[id], onDelete: Cascade)
+//   }
+
+//   model VerificationToken {
+//   id         Int      @id @default(autoincrement())
+//   identifier String   @unique
+//   token      String   @unique
+//   expires    DateTime
+
+//   //@@unique([identifier, token])}
+// }
+
+
 

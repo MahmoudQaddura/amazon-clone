@@ -23,6 +23,10 @@ function Header() {
   const { data: session } = useSession();
   const router = useRouter();
   const items = useSelector(selectItems);
+  let count = 0;
+  items.map((item) => {
+    count += item.quantity;
+  });
   const [windowAvailable, setWindowAvailable] = useState(0);
   useEffect(() => setWindowAvailable(1), []);
 
@@ -88,7 +92,10 @@ function Header() {
             </p>
           </div>
 
-          <div className="Link border border-amazon_blue  hover:border-white">
+          <div
+            onClick={() => router.push("/orders")}
+            className="Link border border-amazon_blue  hover:border-white"
+          >
             <p>Returns</p>
             <p className="font-extrabold md:text-sm">& Orders</p>
           </div>
@@ -98,7 +105,7 @@ function Header() {
             className="relative Link flex items-center border border-amazon_blue  hover:border-white"
           >
             <span className="absolute right-0 top-0 md:right-10 h-4 w-4 bg-yellow-400 rounded-full font-extrabold text-black text-center">
-              {items.length}
+              {count}
             </span>
             <ShoppingCartIcon className="h-10" />
             <p className="hidden md:inline font-extrabold md:text-sm mt-2">

@@ -9,6 +9,8 @@ import ReviewBox from "../../components/ReviewBox";
 
 function Page({ product }) {
   const { id, name, description, price, image } = product;
+  const title = name;
+  const quantity = 1;
   const category = product.category.name;
   const Pcategory = product.category.parent.name;
 
@@ -20,7 +22,16 @@ function Page({ product }) {
 
   const dispatch = useDispatch();
   const addItemToBasket = () => {
-    const product = { id, name, price, description, category, image, rating };
+    const product = {
+      id,
+      title,
+      price,
+      description,
+      category,
+      image,
+      quantity,
+    };
+    console.log(product);
     dispatch(addToBasket(product));
   };
 
@@ -42,7 +53,7 @@ function Page({ product }) {
             style={{ objectFit: "contain" }}
           />
 
-          <h4 className="my-3 text-lg ">{name}</h4>
+          <h4 className="my-3 text-lg ">{title}</h4>
 
           <div className="flex">
             {!rating
@@ -64,7 +75,7 @@ function Page({ product }) {
             />
           </div>
 
-          <p className="font-bold">Left in Stock: {product.quantity}</p>
+          {/* <p className="font-bold">Left in Stock: {product.quantity}</p> */}
           <p className="text-s my-2 ">{description}</p>
 
           <ReviewBox key={product.reviews.id} product={product} />

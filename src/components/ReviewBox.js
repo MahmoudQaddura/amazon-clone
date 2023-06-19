@@ -25,50 +25,62 @@ function ReviewBox({ product }) {
   return (
     <div className="flex  flex-col w-full items-center">
       <h1 className="text-xl">What People Have Said About This</h1>
-      <div className="flex  flex-col bg-gray-300 w-full justify-center items-center px-1 rounded">
-        {reviews
-          ? reviews.map((review) => (
-              <div className="flex flex-col items-start w-full mx-2 mt-2">
-                <div className="flex mb-1">
-                  <p className=" italic ml-1">{review.user.name}</p>
-                  <div className="flex ml-2">
-                    {Array(review.rating)
-                      .fill()
-                      .map((_, i) => (
-                        <StarIcon key={i} className="h-5 text-yellow-500" />
-                      ))}
+      <div className="flex  flex-col bg-gray-200 w-full justify-center items-center px-1 rounded">
+        <div className="rounded-lg  flex w-full flex-col items-start mx-2 my-4 pb-4">
+          {reviews
+            ? reviews.map((review) => (
+                <div className="flex flex-col items-start w-full mx-2 mt-2 pr-4 ">
+                  <div className="flex mb-1 items-center">
+                    <p className=" italic ml-1">{review.user.name}</p>
+                    <div className="flex ml-2">
+                      {Array(review.rating)
+                        .fill()
+                        .map((_, i) => (
+                          <StarIcon key={i} className="h-4 text-yellow-500" />
+                        ))}
+                    </div>
+                  </div>
+                  <div className="w-full bg-white rounded mb-2 px-2 text-lg">
+                    <p>{review.review}</p>
                   </div>
                 </div>
-                <div className="w-full bg-white rounded mb-2 px-2 text-lg">
-                  <p>{review.review}</p>
-                </div>
-              </div>
-            ))
-          : ""}
-        <form className="w-1/2" onSubmit={submitReview}>
-          <div className="flex flex-col items-center flex-auto mb-2">
-            <label>Add Review</label>
-            <input
-              name="review"
-              type="text"
-              placeholder="What do you think?"
-              className="bg-white text-black mb-1 w-full"
-            />
+              ))
+            : ""}
+        </div>
+        {session ? (
+          <form className="w-full" onSubmit={submitReview}>
+            <div className="flex flex-col items-center flex-auto mb-2">
+              <label>Add Review</label>
+              <textarea
+                name="review"
+                cols="30"
+                rows="3"
+                placeholder="What do you think about this product?"
+                className="bg-white text-black mb-1 w-full text-center rounded-3xl"
+              ></textarea>
 
-            <input
-              required
-              name="rating"
-              type="number"
-              max={5}
-              min={1}
-              placeholder="Rate out of 5"
-              className="w-1/2"
-            />
-            <button className="bg-gray-100 mt-1 w-1/4 rounded" type="submit">
-              Add
-            </button>
-          </div>
-        </form>
+              <div className="flex space-x-5 w-full items-center justify-center">
+                <input
+                  required
+                  name="rating"
+                  type="number"
+                  max={5}
+                  min={1}
+                  placeholder="Rate out of 5"
+                  className=" w-1/3 text-center"
+                />
+                <button
+                  className="bg-gray-100 mt-1  w-1/3 rounded"
+                  type="submit"
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+          </form>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

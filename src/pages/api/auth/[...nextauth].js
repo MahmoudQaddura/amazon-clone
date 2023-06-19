@@ -3,6 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../../../../lib/prisma";
 import { compare } from "bcrypt";
+import axios from "axios";
 export const authOptions = {
   session: { strategy: "jwt" },
   providers: [
@@ -12,7 +13,7 @@ export const authOptions = {
       secret: process.env.SECRET,
     }),
     CredentialsProvider({
-      name: "",
+      name: "Account",
       credentials: {
         email: {
           label: "Email",
@@ -44,12 +45,30 @@ export const authOptions = {
           email: user.email,
         };
       },
-      callbacks: {
-        async signIn({}) {
-          return `${process.env.HOST}/`;
-        },
-      },
     }),
   ],
+  callbacks: {
+    async signIn({ account, profile, user }) {
+      if (account.provider === "google") {
+        const user = {
+          name: profile.name,
+          email: profile.email,
+          password: "N/A",
+        };
+        await axios
+          .post(`${process.env.host}/api/db/addUser`, {
+            user,
+          })
+          .catch(function (error) {
+            if (error.response) {
+              console.log(error.message);
+            }
+          });
+        return user;
+      }
+
+      return user;
+    },
+  },
 };
 export default NextAuth(authOptions);

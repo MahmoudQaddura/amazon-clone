@@ -6,10 +6,19 @@ import { addToBasket } from "../slices/basketSlice";
 import { useRouter } from "next/router";
 function Product({ id, title, price, description, category, image }) {
   const router = useRouter();
-
+  const quantity = 1;
   const dispatch = useDispatch();
   const addItemToBasket = () => {
-    const product = { id, title, price, description, category, image };
+    const product = {
+      id,
+      title,
+      price,
+      description,
+      category,
+      image,
+      quantity,
+    };
+    console.log(product);
     dispatch(addToBasket(product));
   };
 

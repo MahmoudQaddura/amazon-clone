@@ -50,7 +50,7 @@ export async function getServerSideProps() {
   //The request contains many things we don't need like Headers and whatnot. We're only interested in the data
   const products = response.data;
 
-  //This will return to this page
+  //This will return the products as props to this page
   return {
     props: { products },
   };
