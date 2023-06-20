@@ -41,8 +41,8 @@ export default async function handler(req, res) {
         quantity: formatted_quantity,
       };
 
-      registerOrder(report);
       res.status(200);
+      registerOrder(report);
     }
   }
 }
