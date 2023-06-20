@@ -12,9 +12,8 @@ function signUp() {
       email: event.target.userEmail.value,
       password: event.target.userPassword.value,
     };
-
     await axios
-      .post(`${process.env.host}/api/db/addUser`, user)
+      .post(`${process.env.host}/api/db/addUser`, { user })
       .then(function (response) {
         alert(response.data);
         signIn("CredentialsProvider", { callbackUrl: "/" });
@@ -32,16 +31,16 @@ function signUp() {
         onSubmit={submitUser}
       >
         <ArrowLeftOnRectangleIcon
-          className="absolute top-2 left-2 h-8 text-yellow-400 hover:cursor-pointer"
+          className="absolute top-2 left-2 h-8 text-amazon_blue hover:cursor-pointer"
           onClick={() => router.push("/")}
         />
         <div className="w-full flex flex-col space-y-3 m-auto items-center justify-center  ">
-          <h1 className="text-yellow-400 text-xl border-b border-yellow-400 w-1/2 text-center pb-3">
+          <h1 className="text-amazon_blue text-xl border-b border-yellow-400  w-1/2 text-center pb-3">
             Create New Account
           </h1>
 
           <div className="flex flex-col flex-auto w-1/2">
-            <label className="text-yellow-400 ">Full Name</label>
+            <label className="text-amazon_blue ">Full Name</label>
             <input
               required
               name="userName"
@@ -51,7 +50,7 @@ function signUp() {
           </div>
 
           <div className="flex flex-col flex-auto w-1/2">
-            <label className="text-yellow-400">Email</label>
+            <label className="text-amazon_blue">Email</label>
             <input
               required
               name="userEmail"
@@ -62,7 +61,7 @@ function signUp() {
           </div>
 
           <div className="flex flex-col flex-auto w-1/2">
-            <label className="text-yellow-400">Password</label>
+            <label className="text-amazon_blue">Password</label>
             <input
               name="userPassword"
               required
@@ -70,10 +69,10 @@ function signUp() {
               className="bg-gray-200 text-black"
             />
           </div>
-          <button className="button w-1/6 h-9 " type="submit">
-            Register
-          </button>
         </div>
+        <button className="button w-1/6 h-9 " type="submit">
+          Register
+        </button>
       </form>
     </div>
   );

@@ -3,7 +3,9 @@ import prisma from "../../../../lib/prisma";
 
 export default async function handler(req, res) {
   const { user } = req.body;
-
+  if (!user) {
+    res.status(406).end();
+  }
   const password = await hash(user.password, 12);
 
   const emailExsists = await prisma.user.findUnique({

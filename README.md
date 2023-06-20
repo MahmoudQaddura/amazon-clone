@@ -26,7 +26,7 @@ Run commands
 
 4. `npm run prisma-push||prisma-studio||prisma-gen`
 
-# Needed environment variables to run this project loacally
+# Needed environment variables to run this project
 
 ## Create a .env.local file in the root directory with the following
 
