@@ -1,8 +1,10 @@
 import { StarIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function ReviewBox({ product }) {
+  const router = useRouter();
   const reviews = product.reviews;
   const { data: session } = useSession();
   const submitReview = async (event) => {
@@ -21,6 +23,8 @@ function ReviewBox({ product }) {
           console.log(error.response.data);
         }
       });
+
+    router.reload();
   };
   return (
     <div className="flex  flex-col w-full items-center">
@@ -73,7 +77,7 @@ function ReviewBox({ product }) {
                   className="bg-gray-100 mt-1  w-1/3 rounded"
                   type="submit"
                 >
-                  Add
+                  Post
                 </button>
               </div>
             </div>
