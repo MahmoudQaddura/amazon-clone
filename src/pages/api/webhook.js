@@ -23,6 +23,7 @@ export default async function handler(req, res) {
       const session = event.data.object;
       const formatted_quantity = JSON.parse(session.metadata.quantity);
       const formatted_names = JSON.parse(session.metadata.product_names);
+      
       const report = {
         shipping: session.shipping_cost.amount_total / 100,
         subtotal: session.amount_subtotal / 100,
@@ -40,7 +41,9 @@ export default async function handler(req, res) {
         product_names: formatted_names,
         quantity: formatted_quantity,
       };
-
+if(!report.shipping_address.line2){
+  report.shipping_address.line2="N/A";
+}
       await registerOrder(report);
       res.status(200).end;
     }
