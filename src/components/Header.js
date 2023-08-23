@@ -54,7 +54,7 @@ function Header() {
           <Image
             onClick={() => router.push("/")}
             alt="logo"
-            src="/logo.png"
+            src="/logo3.png"
             width={150}
             height={40}
             style={{ objectFit: "cover" }}
